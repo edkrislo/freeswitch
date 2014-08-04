@@ -3,5 +3,11 @@ freeswitch
 
 mi configuracion de freeswitch
 Configuracion de la carpeta opt
-Se muestra las descarga de librerias y el module.conf se trato de compilar todos, pero algunos dan errores
-  
+
+  Guia de instalacion:
+https://wiki.freeswitch.org/wiki/Installation_Guide
+
+
+
+
+Nota: module.conf se trato de compilar todos los modulos, pero algunos dan errores
