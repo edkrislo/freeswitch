@@ -1,0 +1,219 @@
+.\" Manual page for the swift(1) program.
+.\" Copyright (c) 2000-2012 Cepstral, LLC.  All rights reserved.
+
+.TH SWIFT 1 v4.3.0 "March 2012"
+.SH NAME
+\fIswift\fR \- The "swift" application is a command-line utility for Text-to- Speech synthesis.  Given plain text or Speech Synthesis Mark-up Language (SSML), it can render audio containing the material as spoken content to file or to an audio device.
+.SH SYNOPSIS
+.nf
+swift [\fB--help\fR] [\fB--params\fR] [\fB--voices\fR] [\fB-V\fR]
+      [\fB--say-prgm-version\fR] [\fB--say-voice-version\fR] [\fB--say-all-voices\fR]
+      [\fB--reg-voice\fR] [\fB--reg-ports\fR]
+      [\fB--customer-name\ name\fR] [\fB--company-name\ name\fR]
+      [\fB--voice-name\ name \fR] [\fB--num-ports\ number\fR]
+      [\fB--license-key\ key\fR]
+      [\fB-n\ voice\ name\fR] [\fB-d voice directory\fR]
+      [\fB-m\ text\ mode\fR] [\fB-e\ encoding\fR]
+      [\fB-x\ SFX\ file\fR] [\fB-l\ lexicon\ file\fR]
+      [\fB-p\ param=string[,param=string...]\fR]
+      [\fB-t\fR] [\fB--events\fR]
+      [\fB-f\ file\ [file\...]\fR] [\fB-o\ output\ file\fR]
+      \fIstring\fR [string ...]
+.fi
+.SH DESCRIPTION
+.I swift
+is a command-line program that uses the Swift TTS Engine and Cepstral voices to perform text-to-speech conversion.  Swift will concatenate all text that isn't associated with any options into a single whitespace-seperated arguement to be synthesized.  For example:
+
+ \fC$ swift hello, world
+
+Options:
+
+.TP 12
+.BI -n\  voice
+Specify a voice by name to use as the current voice.  This has precedence over the \fB-d\fR option.
+.TP
+.BI -d\  path
+Specify a path to a directory containing a valid voice to use as the current voice.
+.TP
+.BI -f\  file(s)
+Synthesize text files or play audio in <list>.  To use standard input, use \fB-f -\fR.  Multiple file names may be given.  Without the \fB-f\fR switch, the default is to synthesize text arguments on the command line.  When taking input from a pipe, the engine will always treat two newlines as an input delimeter, and start speaking text up to that point without waiting for the end of the file.
+.TP
+.BI -o\  file
+Write output to the file specified.  Without this option, the default is to output to the default local audio device.
+.TP
+.BI -m\  mode
+Mode to assume for input: one of \fB"text"\fR, \fB"ssml"\fR, \fB"phone"\fR, or \fB"wave"\fR.  The default is \fB"ssml"\fR.
+.TP
+.BI -e\  encoding
+Text Encoding to assume for input.  Common encoding types include: \fB"utf-8"\fR, \fB"utf-16"\fR, \fB"iso8859-1"\fR, \fB"iso8859-15"\fR, and \fB"us-ascii"\fR.  The default is \fB"us-ascii"\fR.  Note: This does not cause swift to convert text to the specified encoding, but rather tells swift to expect the input text to be of the specified encoding.
+.TP
+.BI -x\  SFX\ file
+Read a file containing special effects (SFX) filters to be applied to the output audio. Overrides any default.sfx file in the voice's directory.
+.TP
+.BI -p\  parameters
+Set Swift TTS Engine parameters.  Multiple parameters can be specified as a comma-delimited string.  For a list of available paramters, run 'swift --params'.  Syntax: PARAM=VALUE[,PARAM=VALUE...]
+.TP
+.BI -l\  lexicon\ file
+Load lexicon entries from the specified file.  These entries are appended to the voice's internal lexicon and those from the voice's lexicon.txt file.  In the event of repeated entries, those found in this file override those found in the voice's lexicon.txt file and the voice's internal lexicon.
+.TP
+.B -t
+Display sentence text as it is synthesized.
+.TP
+.B -V
+Display copyright information and version information for Swift, the current voice, and the language and lexicon components used by the current voice. You can use the -n and -d options to use a particular voice.  Otherwise, the default voice is used.
+.TP
+.B -VV
+Display detailed information about the concurrency ports.
+.TP
+.B --events
+Display a table of synthesis events.
+.TP
+.B --help
+Display a usage message, including descriptions of all available options and usage examples.
+.TP
+.B --params
+List and describe all Swift TTS Engine parameters available for use with the \fB-p\fR option.
+.TP
+.B --voices
+Display a table containing all available voices on the system, including columns for the voice name, version, license status, gender, age, language, and sample rate of each voice.
+.TP
+.B --search
+Search for voices matching string.
+.TP
+.B --order
+Loosely sort voices based on string criteria.  Voices matching string are placed at the top of the list of voices.
+
+The following can be used as search and order criteria:
+  - name
+  - path
+  - version
+  - sample-rate
+  - license/key
+  - language/tag
+  - language/name
+  - language/version
+  - lexicon/name
+  - lexicon/version
+  - speaker/name
+  - speaker/gender
+  - speaker/age
+.TP
+.B --say-prgm-version
+Synthesize version information for Swift TTS using the current voice.  You can specify the -n and -d options to use a particular voice.  Otherwise, the default voice is used.
+.TP
+.B --say-voice-version
+Synthesize voice name, language, and version for the current voice, using the current voice.  You can specify the -n and -d options to use a particular voice.  Otherwise, the default voice is used.
+.TP
+.B --say-all-voices
+Synthesize voice name, language and version of every voice found on the system, using each voice to announce itself.  A table containing this information is printed to the screen as the voices are announced.
+.TP
+.B --reg-voice
+Enter a voice license key.  This may be used with the \fB-n\fR or \fB-d\fR options to specify a voice to license.  Also, the \fB--customer-name\fR, \fB--company-name\fR, \fB--voice-name\fR, and \fB--license-key\fR options can be used to specify these values from the command-line.  If any of these values are omitted from the command-line, you will be prompted to enter them.
+.TP
+.B --reg-ports
+Enter a concurrency license key to allow for simultaneous speech synthesis.  The \fB--customer-name\fR, \fB--company-name\fR, \fB--num-ports\fR, and \fB--license-key\fR options can be used to specify these values from the command-line.  If any of these values are omitted from the command-line, you will be prompted to enter them.
+.TP
+.B --reg-filewrite
+ Enter a distribution license key to allow for writing speech synthesis to a file.   The \fB--customer-name\fR, \fB--company-name\fR, \fB--num-ports\fR, and \fB--license-key\fR options can be used to specify these values from the command-line.  If any of these values are omitted from the command-line, you will be prompted to enter them.
+.TP
+.BI --customer-name\  name
+Supplemental to \fB--reg-voice\fR and \fB--reg-ports\fR.  Your name as it appears in your invoice.
+.TP
+.BI --company-name\  name
+Supplemental to \fB--reg-voice\fR and \fB--reg-ports\fR.  Your company name as it appears in your invoice.  If no company name is specified in your invoice, use [--company-name ""].
+.TP
+.BI --voice-name\  name
+Supplemental to \fB--reg-voice\fR.  The name of the voice to license.
+.TP
+.BI --num-ports\  number
+Supplemental to \fB--reg-ports\fR.  Number of ports for concurrency license.  For Unlimited Concurrency, use [--num-ports ""].
+.TP
+.BI --license-key\  key
+Supplemental to \fB--reg-voice\fR and \fB--reg-ports\fR.  Your license key as it appears in your invoice.
+.PP
+.SH MISCELLANEOUS INFORMATION
+If the
+.BI -m\  phone
+flag is passed, the arguments will be interpreted as space-separated lists of phonemes (using whatever phoneset is native to the voice specified - this is voice-dependent and beyond the scope of this manual page) to be concatenated and synthesized.  You will probably want to quote these in order to make sure they are interpreted as single arguments, e.g.:
+
+ \fC$ swift -m phone "h eh l ow pau w er l d"
+
+and not:
+
+ \fC$ swift -m phone h eh l ow pau w er l d
+
+which will almost certainly not do what you want.
+.PP
+If you want to have Swift save its output to an audio file instead of playing it back, you can use the
+.B -o
+option, followed by the name of the file to save to.  By default, it outputs a monaural Microsoft RIFF (WAVE) file in whatever the default sampling rate for the current voice is, usually 16kHz.  You can change the output format with the audio/output-file=[ riff, snd, raw ] parameter. Currently supported formats are "riff", which is the default RIFF format, "snd", which is the headered Sun/NeXT .au format, "snd", and "raw", which is unheadered 16-bit linear PCM data in the system's native byte order.  Additionally, you can specify an encoding with audio/encoding=[ pcm16, pcm8, ulaw, alaw] where pcm16 is the default.
+.PP
+To output audio at a specific sampling rate, use the \fBaudio/sampling-rate\fR parameter, followed by the number of samples per second.  To output stereo data, you can use \fBaudio/channels=2\fR.
+
+.PP
+.SH ENVIRONMENT
+.I SWIFT_HOME
+specifies the root of the Swift installation,
+.Pa /opt/swift/
+by default.
+.PP
+.I SWIFT_DEFAULT_VOICE
+sets the name of the voice to use if none is explicitly given.
+.PP
+.I SWIFT_VOXPATH
+is a colon-separated list of path names (semicolon-separated on Windows), adds to the default voice path found in the system and user configuration files.  Directories specified in this environment variable will be searched before those in the user's configuration file, which will in turn be searched before those in the system configuration file.
+.PP
+.SH Configuration File Location
+.PP
+The Swift configuration file, typically called "swift.xml" on most platforms and "com.cepstral.swift" under Apple Macintosh OS X, is an XML-based file used to set various parameters for use by the Swift TTS Engine.
+.PP
+\fBUnix\fR
+.PP
+Under Unix-bases systems other than Macintosh OS X, Swift searches for the configuration file in several locations, using the first one found.  The locations are searched in this order:
+.PP
+$HOME/.swift/swift.xml
+.PP
+$SWIFT_HOME/etc/swift.xml
+.PP
+/opt/swift/etc/swift.xml
+.PP
+/etc/swift.xml
+.PP
+\fBMacintosh OS X\fR
+.PP
+Under Mac OS X, Swift searches for the configuration file in two locations, using the first one found.  The locations are searched in this order:
+.PP
+$HOME/Library/Preferences/com.cepstral.swift
+.PP
+/Library/Preferences/com.cepstral.swift
+.SH EXAMPLES
+\fBLicensing Examples:\fR
+.TP
+\fC$ swift --reg-voice
+ Register a voice interactively.
+.TP
+\fC$ swift --reg-ports
+Register port concurrency interactively
+.TP
+\fC$ swift --reg-voice --customer-name "John Doe" --company-name "Initech" --voice-name David --license-key "XX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX"
+Register a voice using command-line parameters.\n"
+.TP
+\fC$ swift --reg-ports --customer-name "John Doe" --company-name "Initech" --num-ports 96 --license-key "XX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX"
+Register port concurrency using command-line parameters.
+.PP
+\fBUsage Examples:\fR
+.TP
+\fC$ swift "Cepstral: We Build Voices."
+Speak the contents of the quoted string.  If the quotation marks are not used, the system will concatenate all text into a string to synthesize.
+.TP
+\fC$ swift -l /path/to/mylex -f /path/to/myfile.ssml\n"
+Add the lexicon in the file "mylex" to the text processing, and then render the contents of the SSML file.  The default mode for both file and command-line input is SSML.
+.TP
+\fC$ swift -n William -m text -f /path/to/file.txt -o file.wav
+Use the voice William, assume the mode is raw "text" rather than SSML, render the contents of "myfile.txt" to audio, and save it to the given output file.
+.SH AUTHORS
+swift is a product of the good folks at Cepstral, LLC.
+.PP
+Copyright (c) 2000-2007 Cepstral, LLC.
+.PP
+\fIhttp://www.cepstral.com.\fR 

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+SWIFT_HOME="@INSTALLED_AT@"
+LD_LIBRARY_PATH="@INSTALLED_AT@/lib"
+SWIFT_BIN="@INSTALLED_AT@/bin"
+
+export  SWIFT_HOME
+export  LD_LIBRARY_PATH
+
+exec "$SWIFT_BIN/swift.bin" ${1+"$@"}

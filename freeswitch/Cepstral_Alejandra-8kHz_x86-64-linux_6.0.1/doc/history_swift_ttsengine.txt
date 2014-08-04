@@ -1,0 +1,333 @@
+Version History for Cepstral Swift
+(Cepstral High Quality, Lightweight TTS Engine)
+----------------------------------------------------------------------------
+Notes for the Cepstral TTS Engine
+----------------------------------------------------------------------------
+6.0.1 - March 8, 2012
+  * Initial release bundled with 6.0 voices designed for telephony.
+Bug fixes:
+  * FIXED: Small memory leaks in the licensing system.
+  * FIXED: High resource use by cepstral-licsrv on the linux version, 
+           even when no synthesis was going on.
+----------------------------------------------------------------------------
+6.0.0 - beta 1 - January 27, 2012
+Enhancements
+  * More natural sounding TTS designed specifically for telephony.
+      -- Audio is equalized for a Telephony system, making Cepstral TTS 
+         sound much clearer.
+      -- Unit Selection is optimized to better match context, 
+         significantly reducing the number of selection errors.
+      -- A new join algorithm renders smoother TTS with more life-like prosody.
+  * Better integration with Asterisk.  
+      -- Asterisk channels may be associated with a swift synthesis port, 
+         so a single call will only ever require one concurrency port.
+      -- Audio is tuned to match Asterisk's default pre-recorded 
+         prompts, so Cepstral TTS seamlessly integrates into a PBX.
+  * Improved licensing mechanism
+      -- The licensing mechanism for concurrent synthesis ports is  
+         completely revamped.
+      -- The possible number of concurrent syntheses now exactly matches
+         the purchased license.  
+      -- Using concurrent synthesis ports is both more stable and more 
+         predictable.
+  * Improved audio distribution control.    
+      -- Compliance with audio distribution licensing is now enforced by
+         requiring the explicit purchase of an audio distribution license 
+         to enable saving audio to a file.
+
+Bug Fixes:
+  * Many synthesis errors due to poor selections are eliminated.
+  * Checking the status of the ports in use no longer consumes a synthesis port.
+  * Fixed a bug where the number of available ports gradually decreases 
+    over prolonged use.
+  * Memory leaks are repaired.
+----------------------------------------------------------------------------
+5.1.0 - June 11, 2008
+
+Bug Fixes:
+  * Fixed a leak in socket handles when a synthesis request was denied a 
+    synthesis token because it (they) were all allocated.
+  * Support modifying the socket used for licensing.
+  * Fixed reading RIFF Audio files that were not word (4 byte) aligned.
+
+----------------------------------------------------------------------------
+5.0.0 - March 19, 2008
+
+Bug Fixes:
+  * Fixed memory leaks when using the callback function capability.
+  * Fixed a multitude of voice licensing issues.
+  * Fixed license server so that on broken socket connection it
+    will not consume most of CPU.
+----------------------------------------------------------------------------
+4.2.0 - March 14, 2007
+
+Enhancements:
+  * A new swift_event type, SWIFT_EVENT_CANCELLED has been created.  This
+    event is sent to the host application's swift_callback_t function for
+    the swift_port when a swift_port_stop() call has been handled.
+    
+Bug Fixes:
+  * The swift.xml configuration file can now contain Latin-1 characters
+    (iso-8859-1).
+----------------------------------------------------------------------------
+4.1.4 - August 18, 2006
+
+Bug Fixes:
+  * Fixed an issue under Unix platforms (Linux, Solaris, OS X) regarding
+    slowness in rendering speech.  The most common symptom was a several-
+    second delay between sentences when speaking mutli-sentence blocks of
+    text.
+----------------------------------------------------------------------------
+4.1.2 - July 25, 2006
+
+Bug Fixes:
+  * Fixed a memory usage problem under Unix platforms (Linux, Solaris, OS X)
+    where virtual memory was growing very rapidly when speaking large
+    amounts of text.
+----------------------------------------------------------------------------
+4.1.0 - June 30, 2006
+
+Enhancements:
+  * Swift can now play .au audio files.
+  * A new API call, swift_license_get_concurrency_info, has been added to
+    retrieve information about the number of concurrency tokens available
+    and in use on the system.  For more information, see the API docs in the
+    SDK.
+
+Bug Fixes:
+  * FIXED: The last entry in lexicon.txt is ignored if there is no newline
+    at the end of the file.
+  * FIXED: A Concurrency token is lost if an application using Swift TTS
+    with a concurrency license does not exit cleanly.
+  * If an unlicensed voice is in use in a given application, it no longer
+    needs to be reloaded for the nagging to stop if the voice is licensed
+    while the voice is in use.
+  * All available diagnostic flags now work without causing the TTS engine
+    to crash.  Also, for those that didn't crash before, now they print out
+    sensible values instead of garbage.
+  * swift_port_play_wave() can now play wave files asynchronously.
+ 
+  Linux and Solaris Only:
+  * The swift.xml file no longer has heavy limitations on the formatting for
+    the voice_path, library_path, binary_path, and etc_path elements.  These
+    limitations made sure that the 'swift' and 'cepstral-licsrv' scripts
+    could properly parse for the values it needed.  These scripts no longer
+    look to swift.xml for these values.
+    
+  Windows Only:
+  * FIXED: The system must be connected to the internet for the voices to
+    speak.
+----------------------------------------------------------------------------
+4.0.3 - March 10, 2006
+
+Enhancements:
+  * "audio/output-format" parameter can now be set to "none" to tell swift
+    to bypass the writing of audio to the audio device, thus speeding up the
+    process of running text through the front-end text processor only when
+    you don't want the resulting audio.
+
+Bug Fixes:
+  * FIXED: If two words that have custom pronunciations defined in a voice's
+    lexicon.txt file are used consecutively in text to speech, the custom
+    pronunciation for the second word is ignored.
+  * "config/default-voice" engine parameter now works.  You can set this
+    parameter in a swift_params structure that is passed to a call to
+    swift_engine_open() to set the default voice for that engine.  The
+    default voice is determined in this order: (1) config/default-voice
+    parameter, (2) SWIFT_DEFAULT_VOICE engine config feature, (3)
+    SWIFT_DEFAULT_VOICE environment variable (except Windows CE), (4)
+    SwiftDefaultVoice registry setting (Windows and Windows CE only).
+    
+  Unix Only:
+  * Install script (install.sh) no longer uses the 'fmt' command to output
+    formatted data to the screen.  This command wasn't available on some
+    lightweight distros, such as AstLinux.
+  * Install script (install.sh) now does proper tilde-expansion for the
+    install-to directory.  That is, if you respond with "~/swift" when
+    asked, "Install to what directory?" it will install to $HOME/swift.
+----------------------------------------------------------------------------
+4.0.1 - January 31, 2006
+
+Enhancements:
+  * New method for incorporating synthesis information at run-time, with
+    better overall sound quality across all voices.
+  * Performance and robustness improvements, particularly in high-density
+    installations
+  * XML-based configuration mechanism (swift.xml, replacing swift.conf)
+    which allows specifications of defaults and options for the voice,
+    languages, and engine.
+  * Expanded the lexicon format to allow for phrases and whitespace in user-
+    defined entries.
+  * Expanded handling for high-bit ascii and other special characters,
+    including accent marks.
+  * Expanded lexicons, improved grapheme-to-phoneme support for unknown
+    words, and improved text processing overall.
+  * Voice settings file is now "settings.txt"   (was voxdefs.h).
+  * Voice lexicon name changed to "lexicon.txt" (was userlex.txt).
+  * Native 64 bit Linux builds (versions) available.
+  * Added Solaris x86 support.
+----------------------------------------------------------------------------
+3.5.0 - November 30, 2005
+
+  * No Changes.
+----------------------------------------------------------------------------
+3.4.2 - September 19, 2005
+
+Bug Fixes:
+  * FIXED: When used in heavy-concurrency environments, the system may hang.
+  * FIXED: Entries in the userlex.txt file are not being honored.
+----------------------------------------------------------------------------
+3.4.1 - September 2, 2005
+
+  * No Changes.
+----------------------------------------------------------------------------
+3.4.0 - August 18, 2005
+
+New Features:
+  * New speech/pitch/shift parameter for relative adjustment of pitch.
+  
+Bug Fixes:
+  * The async_example sample code now handles keypresses properly on
+    Windows.
+  * The call to swift_port_play_wave now returns a valid swift_result_t
+    value.  The call used to return the number of bytes written to the audio
+    device not a swift_result_t value.  This would lead to failures being
+    reported on successful playing of audio (and vice versa).
+----------------------------------------------------------------------------
+3.3.3 - August 5, 2005
+
+  * FIXED: For every call to synthesize text, one Handle resource is leaked.
+    This can be seen in the Windows Task Manager, Processes tab, under the
+    Handles tab.  After the completion of every Speak call, the Handles
+    count is one higher than before the call was made.
+  * FIXED: If using a concurrency license with a finite number of ports
+    (I.e. NOT an Unlimited Ports license), the license server leaks many
+    Handle resources.  This can be seen in the Windows Task Manager,
+    Processes tab, under the Handles tab.  After the completion of every
+    Speak call, the Handles count is several higher than before the call
+    was made.
+----------------------------------------------------------------------------
+3.3.2 - July 28, 2005
+
+  * No Changes.
+----------------------------------------------------------------------------
+3.3.1 - July 12, 2005
+
+Bug Fixes:
+  * Setting the audio/output-format parameter to "raw" works again.
+  * Fixed a crash that could occur when requesting events and not using a
+    background job for synthesis.
+  * FIXED: The audio device is opened unnecessarily when capturing audio
+    using swift_port_get_wave().
+----------------------------------------------------------------------------
+3.3.0 - June 15, 2005
+
+New Features:
+  * All events are fired at playback time.  In prior releases, all events
+    were fired at synthesis time.  This required application developers to
+    capture the events and run their own timer to handle them in sync with
+    audio playback.  Now they are in sync with audio playback as they arrive
+    in the callback, unless the events/immediate param is set.
+  * Event times are now reported relative to the start of synthesis, not the
+    start the last sentence.
+  * Unknown or malformed synthesis parameters, passed with the -p switch or
+    the swift_params API, are now rejected by the engine.
+
+Bug Fixes:
+  * FIXED: Event text information is incorrect when the text contains
+    quotations marks.
+  * FIXED: Sometimes when you stop playback then start again, you may hear
+    bits of what it was previously speaking mixed in with what it is
+    currently speaking.  This also occurs if change voices; You may hear
+    the prior voice speak a bit after the new voice begins speaking.
+  * FIXED: audio/pan and audio/channels parameters are only honored if set
+    when opening the port.  If you set them on an open port, they are
+    ignored.
+  * FIXED: Nagging goes to the audio device even if audio/output-file
+    parameter is set.
+  * FIXED: Synthesizing both phones and text in the same engine instance
+    fails (<phoneme> tags in SSML are not affected).
+----------------------------------------------------------------------------
+
+3.2.1 - April 01, 2005
+
+Bug Fixes:
+  * FIXED: Voices continue to nag after entering a valid license key.
+  * You can now save AIFF files in any sampling rate.
+----------------------------------------------------------------------------
+
+3.2.0 - March 14, 2005
+
+Enhancements:
+  * Reduced size of lexicon and core (non-voice components)
+  * Support for AIFF output (use the audio/output-format parameter).
+  * Spell-out mode, using the tts/spell-out parameter.
+
+Bug Fixes:
+  * Audio callbacks now work with unregistered voices.
+  * The voice/cache-policy and voice/cache-size parameters work now.
+  * FIXED: swift_port_speak() crashes when passed SWIFT_UNICODE encoding.
+  * FIXED: default.sfx file is not honored under Windows or Windows CE
+    (Pocket PC).  You can still load sfx files manually, but if you place a
+    default.sfx file in [Install Path]\voices\Frank, for example, it will
+    not be loaded.
+  * FIXED: If you have a concurrency license installed and remove the
+    license file, all calls to TTS will hang forever.  To fix this, either
+    put the concurrency license file back into place or stop the License
+    Server service (NT) or daemon (Linux) to allow the Swift engine to
+    operate in single-user mode.
+  * FIXED: If you have purchased and activated a concurrency license for N
+    ports, then purchase and activate a concurrency license for M > N ports,
+    you will only be able to access N ports until you restart the License
+    Server service (NT) or daemon (Linux).
+----------------------------------------------------------------------------
+
+3.1.1 - January 19, 2005
+
+Bug Fixes:
+  * Improved output quality of 8KHz audio when using 16KHz voice.
+  * Audio device no longer opened if a swift_callback has been set that
+    requests events of type SWIFT_EVENT_AUDIO.
+  * If setting a callback to capture SWIFT_EVENT_AUDIO type events, and you
+    are also changing the sampling rate of the output, you no longer have to
+    jump through hoops to make it work.  I.e. the order of operations is not
+    as critical as it was in v3.1.0.
+----------------------------------------------------------------------------
+
+3.1.0 - December 13, 2004
+
+New Features:
+  * Left-to-Right panning of output audio: set the params audio/channels=2
+    and audio/pan=[-1,0,1]
+
+Bug Fixes:
+  * audio/volume parameter now works.
+  * The audio/encoding parameter is now honored for generating u-law, a-law
+    and 8-bit PCM files.
+  * Nagging honors voice config settins for rate, pitch, volume, sfx, etc.
+  * saving a wave (via audio/output-file) now correctly inserts the nags
+    for unlicensed voices. (For v3.0.0, it only saved the nag text, ignoring
+    the input text.)
+  * Can now run as a module inside the Asterisk PBX.
+----------------------------------------------------------------------------
+
+3.0.3 - September 30, 2004 [Linux only]
+
+Bug Fixes:
+  * No longer crash on systems with no /dev/dsp.  (Only open /dev/dsp when
+    we're actually about to write to it.)
+  * Saving a wave (via audio/output-file) now correctly inserts the nags for
+    unlicensed voices. (For v3.0.0, it only saved the nag text, ignoring the
+    input text.)
+----------------------------------------------------------------------------
+
+3.0.2 - September 13, 2004
+
+  * Initial Linux release.
+----------------------------------------------------------------------------
+
+3.0.0 - June 1, 2004
+
+  * Initial Windows release.
+----------------------------------------------------------------------------
+

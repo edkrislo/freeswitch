@@ -1,0 +1,17 @@
+#include "ceplang_es.h"
+#include "ceplex_es.h"
+#define VOXNAME voice
+#define VOXDIR NULL
+#define REGISTER_VOX register_voice
+#define UNREGISTER_VOX unregister_voice
+#define VOXHUMAN "Alejandra-8kHz"
+#define VOXGENDER "female"
+#define VOXLANG "es-am"
+#define FVLANGNAME "Americas Spanish"
+#define VOXAGE "30"
+#define VOXVERSION "6.0.0"
+#define BYTE_MCEPS TRUE
+#define PROSODY "none"
+#define VOXBUILD "2012-03-06"
+#define VOXSPS 8000
+#define ALL_DATA 1.0

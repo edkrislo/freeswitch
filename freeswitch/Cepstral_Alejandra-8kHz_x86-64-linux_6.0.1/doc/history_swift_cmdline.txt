@@ -1,0 +1,250 @@
+Version History for Cepstral 'swift' Executable
+(Command-Line Interface to Cepstral Swift TTS)
+----------------------------------------------------------------------------
+6.0.1 - March 8, 2012
+  * Initial 6.0 release bundled with telephony voices.
+Bug fixes:
+  * FIXED: Small memory leaks in the licensing system.
+  * FIXED: High resource use by cepstral-licsrv on the linux version, 
+           even when no synthesis was going on.
+  * FIXED: Error in i386 builds where swift --reg-ports failed to write 
+           a license file.  
+----------------------------------------------------------------------------
+6.0.0 - Beta 1- Janurary 27, 2012
+
+Enhancements
+  * 'swift -VV' now shows a table dispaying detailed information about the 
+     the concurrency ports.
+  *  Audio distribution is disabled by default, when the '-o FILENAME.wav' 
+     is passed to swift, normal synthesis output is replaced with a message 
+     reminding that the system is not licensed to distribute audio.
+  * 'swift --reg-filewrite' activates an audio distribution license, 
+     enabling the normal saving of audio to a file.  
+Bug fixes:
+  * 'swift -V' and "swift -VV' no longer consume a concurrency port.
+----------------------------------------------------------------------------
+5.1.0 - June 11, 2008
+
+  * No Changes.
+----------------------------------------------------------------------------
+5.0.0 - March 19, 2008
+
+  * No Changes.
+----------------------------------------------------------------------------
+4.2.0 - March 14, 2007
+
+Enhancements:
+  * Now exits gracefully when the user sends a Ctrl+C signal.  This means
+    that there is no lag time before the concurrency token that was in use
+    at the time of the Ctrl+C signal is recovered.
+----------------------------------------------------------------------------
+4.1.4 - August 18, 2006
+
+  * No Changes.
+----------------------------------------------------------------------------
+4.1.2 - July 25, 2006
+
+Linux and Solaris Only:
+
+  * FIXED: If you install swift to anywhere other than /opt/swift and you
+    register a concurrency license using 'swift --reg-ports,' it fails to 
+    write the concurrency license file
+----------------------------------------------------------------------------
+4.1.0 - June 30, 2006
+
+Bug Fixes:
+  * FIXED: If an audio file is locked (for instance, if it is open and
+    paused in a media player), and you attemp to overwrite the file, the
+    operation fails as expected. However, when you close the media player,
+    the file is deleted.
+
+Enhancements:
+  * 'swift --register' has been replaced with 'swift --reg-voice'.  This
+    brings consistency to the two registration options.  "--reg-ports" is
+    very specific while "--register" was vague, so it has been replaced with
+    a more specific "--reg-voice."
+  * An error message is now printed when an audio file specified to be
+    played with "-f" option cannot be played.
+  * 'swift -V' now displays concurrency license information, including the
+    total number of concurrent ports registered and the number of ports
+    currently in use on the system.
+----------------------------------------------------------------------------
+4.0.3 - March 10, 2006
+
+Bug Fixes:
+  * FIXED: The swift manpage is out of date.
+  * FIXED: 'swift -V' prints incorrect language version.
+  * FIXED: 'swift -V' prints bogus lexicon name and version.
+  * "config/default-voice" engine parameter now works.  You can set this
+    parameter through use of the -p option to command-line swift.  The
+    default voice is determined in this order: (1) config/default-voice
+    parameter, (2) SWIFT_DEFAULT_VOICE engine config feature, (3)
+    SWIFT_DEFAULT_VOICE environment variable (except Windows CE), (4)
+    SwiftDefaultVoice registry setting (Windows and Windows CE only).
+    
+Enhancements:
+  * 'swift --register' and 'swift --reg-ports' are now more forgiving.
+    Leading and trailing whitespace is cropped from all input fields, and
+    the license key is now case-insensitive.  Note, though, that the Name
+    and Company fields are still case-sensitive.
+----------------------------------------------------------------------------
+4.0.1 - January 31, 2006
+
+New Features:
+  * 'swift -t' shows each sentence at the time it is played.  This is very
+    handy for listening to text and seeing what it is saying as it says it.
+  * New additional parameters to 'swift --register' and 'swift --reg-ports'
+    to allow you to enter your voice or concurrency license information with
+    a single command using arguments.  Run 'swift --help' for more
+    information and examples.
+  * 'swift --say-pgm-version' speaks version information.
+  * 'swift --say-voice-version' speaks name, language, and version of
+    currently loaded voice.  This can be used in conjunction with -n switch
+    to set voice.
+  * 'swift --say-all-voices' lists and speaks names, languages, and versions
+    of all voices found on the system
+  * Multiple text arguments are concatenated and spoken as one utterance.
+    This causes the following two commands to be treated identically:
+    
+    swift -n David "Hello, how are you?"
+    
+    swift -n David Hello, how are you?
+    
+    Whereas before, the latter command would make four seperate calls to
+    synthesize each word seperately.
+
+Enhancements:
+  * 'swift --help' now shows a much more readable help message, and includes
+    several usage examples.
+  * When synthesizing text from standard input by using 'swift -f -', you
+    can now signal a chunk of text to be synthesized by passing two consec-
+    utive newline characters.
+  * Improved output messages for errors, warnings, and other engine output
+  * 'swift --register' and 'swift --reg-ports' are now more forgiving with
+    respect to the data you input.  Leading and trailing whitespace is
+    cropped from all input fields, and the license key is now case-
+    insensitive.  Note, though, that the Name and Company fields are still
+    case-sensitive.
+    
+Bug Fixes:
+  * FIXED: Input text starting with a hyphen is treated as a parameter
+    switch.  For instance, something like "$swift '--The Raven--...'" will
+    print out the Usage string, as if you've entered an invalid switch.
+    NOTE: To signify the end of options, use "--" by itself.  For instance:
+    
+      ./swift -n William --events -- "--The Raven" -o hello.wav
+      
+    Will speak, "The Raven,  Oh Hello dot wav" in Williams voice and will
+    *not* create a wave file (the -o argument being treated as input text).
+----------------------------------------------------------------------------
+3.5.0 - November 30, 2005
+
+New Features:
+  * 'swift --voices' now shows information about the software in addition to
+    the table of information about the installed voices.
+----------------------------------------------------------------------------
+3.4.2 - September 19, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.4.1 - September 2, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.4.0 - August 18, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.3.3 - August 5, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.3.2 - July 28, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.3.1 - July 12, 2005
+
+Bug Fixes:
+  * FIXED: Setting swift.exe into phone mode and asking for event
+    information causes a crash.
+  * FIXED: 'swift -V' shows no lexicon information
+----------------------------------------------------------------------------
+3.3.0 - June 15, 2005
+
+Bug Fixes:
+  * FIXED: swift -m wave fails with an invalid NULL param error.
+  * FIXED: Command-line swift will fail to play sound (wav, aiff) files from
+    disk if no voices are loaded.
+New Features:
+  * If -m switch or text/content-type param isn't set, command-line swift is
+    now able to do the right thing with the file based on its extension.
+    For instance:
+
+    'swift -f myWave1.wav myTextFile.txt myWave2.wav'
+
+    Will play the two wave files and synthesize the text in the text file.
+----------------------------------------------------------------------------
+3.2.1 - April 01, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.2.0 - March 14, 2005
+
+  * swift --events now shows event information in a nicely formatted table.
+----------------------------------------------------------------------------
+3.1.1 - January 19, 2005
+
+  * No Changes
+----------------------------------------------------------------------------
+3.1.0 - December 13, 2004
+
+New Features:
+  * Defaults to SSML mode for text parsing.
+  * Save-as-wave can now be done via '-o filename' switch (No longer need to
+    set 'audio/output-file' param).
+  * '-f' switch can be used to specify multiple input files, by making a
+    call like this:
+      swift -f file1.txt file2.txt file3.txt
+  * Ability to enter port license information.
+  * Ability to have a phoneme list as input by specifying '-m phones'.
+  * '-x' switch for loading a sound effects file (.sfx).
+  * Can use '--register' switch with '-n voice' or  with '-d directory'.
+
+Bug Fixes:
+  * SSML support now working.  No longer crashes when making this call:
+      swift "<voice name='Frank'>Hello</voice>"
+  * '-f filename' switch now works correctly when given with other switches
+  * Now provides feedback if the file given in '-f filename' switch cannot
+    be opened.
+  * 'swift --voices' now prints a much nicer table of all installed voices
+    and their attributes.
+  * 'swift -V' now shows engine version number.
+  * If 'swift -o filename' fails to write the wave file for any reason, it
+    no longer leaves the bad output file laying around on the file system.
+  * An error is displayed if license file can't be written during
+    'swift --register' or 'swift --reg-ports'.
+  * Results of 'swift --params' have been checked and all options listed
+    actually work.
+  * 'swift -p audio/encoding=[ulaw,alaw,pcm8]' work now.
+----------------------------------------------------------------------------
+3.0.3 - September 30, 2004 [Linux only]
+
+New Features:
+    * '-f' switch can be used to specify multiple input files, by making a
+      call like this:
+      swift -f file1.txt file2.txt file3.txt
+    * Can use '--register' switch with '-n voice' or with '-d directory'.
+
+Bug Fixes:
+    * '-f filename' switch now works correctly when
+    given with other switches.
+----------------------------------------------------------------------------
+3.0.2 - September 13, 2004
+
+  * Initial Linux release.
+----------------------------------------------------------------------------
+3.0.0 - June 1, 2004
+
+  * Initial Release, bunded with 3.0.0 voices
+----------------------------------------------------------------------------

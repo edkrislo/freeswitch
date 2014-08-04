@@ -1,0 +1,8 @@
+# Created by Cepstral FX Rack on Fri Oct 25 09:53:16 2002
+
+# Chorus
+CHO 0.5 1.0 0.7 1 12 4
+
+# Delay
+DEL 0.1 1.0 0.2 100
+
